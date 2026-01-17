@@ -170,7 +170,7 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
         const colors = getColors(section.type);
         const icon = getIcon(section.type);
         return (
-            <div key={idx} className={`rounded-xl border p-4 sm:p-5 shadow-sm transition-all hover:shadow-md ${colors}`}>
+            <div key={idx} className={`rounded-xl border p-4 sm:p-5 shadow-sm transition-all hover:shadow-md ${colors} break-inside-avoid print:break-inside-avoid`}>
             <h3 className="text-base sm:text-lg font-bold mb-4 flex items-center gap-2 uppercase tracking-wide opacity-90 border-b border-black/5 pb-2">
                 <span className="text-xl shrink-0">{icon}</span>
                 <span className="break-words">{section.title}</span>
@@ -189,23 +189,23 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden flex flex-col h-full relative w-full">
+    <div className="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden flex flex-col h-full relative w-full print:h-auto print:border-none print:shadow-none">
       
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-4 sm:px-6 py-5 flex items-center gap-3 shrink-0">
-         <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm text-white shrink-0">
+      <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-4 sm:px-6 py-5 flex items-center gap-3 shrink-0 print:bg-none print:text-black">
+         <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm text-white shrink-0 print:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
             </svg>
           </div>
-          <div className="text-white">
+          <div className="text-white print:text-indigo-900">
             <h2 className="text-lg font-bold tracking-tight leading-tight">Mentor Intelligence</h2>
-            <p className="text-indigo-100 text-xs opacity-80">AI-Driven Insights & Planning</p>
+            <p className="text-indigo-100 text-xs opacity-80 print:text-indigo-600">AI-Driven Insights & Planning</p>
           </div>
       </div>
 
       {/* Content Area */}
-      <div className="p-4 sm:p-6 bg-gray-50/50 min-h-[550px] max-h-[1200px] overflow-y-auto custom-scrollbar flex-grow">
+      <div className="p-4 sm:p-6 bg-gray-50/50 min-h-[550px] max-h-[1200px] overflow-y-auto custom-scrollbar flex-grow print:overflow-visible print:h-auto print:max-h-none print:bg-white">
         {loading ? (
           <div className="flex flex-col items-center justify-center h-full space-y-6 py-12">
             <div className="relative">

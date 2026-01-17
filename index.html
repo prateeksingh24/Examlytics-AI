@@ -13,6 +13,20 @@
       ::-webkit-scrollbar-track { background: #f1f1f1; }
       ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
       ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+      /* Print Styles */
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          background-color: white !important;
+        }
+        /* Hide scrollbars in print */
+        ::-webkit-scrollbar { display: none; }
+        
+        /* Ensure pages break nicely */
+        .break-inside-avoid { page-break-inside: avoid; }
+      }
     </style>
   <script type="importmap">
 {

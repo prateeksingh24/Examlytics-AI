@@ -114,6 +114,10 @@ const App: React.FC = () => {
     setInputError("");
   };
 
+  const handleDownloadReport = () => {
+    window.print();
+  };
+
   // ----------------------------------------------------------------------
   // RENDER: Landing / Input View
   // ----------------------------------------------------------------------
@@ -244,21 +248,28 @@ const App: React.FC = () => {
   const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / (totalQuestions - report.subjectWiseAnalysis.reduce((a,c) => a + c.unattempted, 0))) * 100) : 0;
 
   return (
-    <div className="min-h-screen pb-12 bg-gray-50 font-inter">
+    <div className="min-h-screen pb-12 bg-gray-50 font-inter print:bg-white print:pb-0">
       {/* Header */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm print:static print:shadow-none print:border-b-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center gap-2">
-               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg print:border print:border-indigo-600 print:text-indigo-600 print:bg-none">
                  E
                </div>
                <span className="text-xl font-bold text-gray-900 tracking-tight">
                  Examlytics <span className="text-indigo-600">AI</span>
                </span>
             </div>
-            <div className="flex items-center">
-              <button onClick={handleReset} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={handleDownloadReport} 
+                className="text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition px-4 py-2 rounded-lg flex items-center gap-2 print:hidden"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                Download Report
+              </button>
+              <button onClick={handleReset} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                 Upload New
               </button>
@@ -267,17 +278,17 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 print:mt-4">
         {/* Scoreboard Section */}
-        <section className="mb-8">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <section className="mb-8 break-inside-avoid">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 print:border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2 border-b border-gray-100 pb-4">
               <span className="text-xl">📊</span> Performance Overview
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {/* Main Score Card */}
-              <div className={`rounded-xl p-6 border flex flex-col items-center justify-center text-center relative overflow-hidden ${category.color}`}>
+              <div className={`rounded-xl p-6 border flex flex-col items-center justify-center text-center relative overflow-hidden ${category.color} print:border-2`}>
                 <div className="absolute top-0 right-0 p-2 opacity-10">
                    <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                 </div>
@@ -289,7 +300,7 @@ const App: React.FC = () => {
               </div>
 
               {/* Accuracy Card */}
-              <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex flex-col items-center justify-center text-center relative group hover:border-blue-200 transition-colors">
+              <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex flex-col items-center justify-center text-center relative group hover:border-blue-200 transition-colors print:bg-blue-50">
                 <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
@@ -299,7 +310,7 @@ const App: React.FC = () => {
               </div>
 
                {/* Attempt Card */}
-               <div className="bg-purple-50/50 rounded-xl p-6 border border-purple-100 flex flex-col items-center justify-center text-center group hover:border-purple-200 transition-colors">
+               <div className="bg-purple-50/50 rounded-xl p-6 border border-purple-100 flex flex-col items-center justify-center text-center group hover:border-purple-200 transition-colors print:bg-purple-50">
                 <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
                 </div>
@@ -311,7 +322,7 @@ const App: React.FC = () => {
               </div>
 
               {/* Breakdown Mini Chart */}
-              <div className="bg-gray-50 rounded-xl p-3 border border-gray-100 flex flex-col items-center justify-center relative">
+              <div className="bg-gray-50 rounded-xl p-3 border border-gray-100 flex flex-col items-center justify-center relative print:bg-gray-50">
                  <div className="absolute top-3 left-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Attempt Distribution</div>
                  <div className="h-28 w-full mt-2">
                     <AttemptDistributionChart data={report} />
@@ -328,7 +339,7 @@ const App: React.FC = () => {
           <div className="lg:col-span-2 space-y-8">
             
             {/* Subject Performance */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid">
                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
                  <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
                  Subject Analysis
@@ -336,7 +347,7 @@ const App: React.FC = () => {
                
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                   {report.subjectWiseAnalysis.map((sub, idx) => (
-                    <div key={idx} className="border border-gray-100 bg-gray-50/30 rounded-xl p-4 transition-all hover:shadow-md hover:border-indigo-100 group">
+                    <div key={idx} className="border border-gray-100 bg-gray-50/30 rounded-xl p-4 transition-all hover:shadow-md hover:border-indigo-100 group print:bg-gray-50">
                       <div className="flex justify-between items-center mb-3">
                         <span className="font-bold text-gray-800 text-lg group-hover:text-indigo-700 transition-colors">{sub.subject}</span>
                         <span className={`text-sm font-black px-2 py-1 rounded-md ${
@@ -360,13 +371,14 @@ const App: React.FC = () => {
                   ))}
                </div>
 
-               <div className="h-72 border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-center gap-6">
-                 <div className="w-full md:w-1/2 h-full">
+               {/* Revised Chart Container for Mobile Responsiveness */}
+               <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-center gap-8 h-auto md:h-80">
+                 <div className="w-full md:w-1/2 h-64 md:h-full">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Score Contribution</h4>
                     <ScoreDistributionChart data={report} />
                  </div>
-                 <div className="w-full md:w-px h-px md:h-full bg-gray-100"></div>
-                 <div className="w-full md:w-1/2 h-full">
+                 <div className="w-full h-px md:w-px md:h-full bg-gray-100"></div>
+                 <div className="w-full md:w-1/2 h-64 md:h-full">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Difficulty Mastery</h4>
                     <DifficultyAnalysisChart data={report} />
                  </div>
@@ -374,7 +386,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Chapter Drill Down */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid">
               <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
                 <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
                 Deep Dive: Chapter Level
@@ -383,7 +395,7 @@ const App: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
                 {/* Strong Chapters */}
-                <div className="bg-green-50/30 rounded-xl border border-green-100/50 p-5">
+                <div className="bg-green-50/30 rounded-xl border border-green-100/50 p-5 print:bg-green-50">
                   <h4 className="font-bold text-green-800 flex items-center gap-2 mb-4">
                     <div className="p-1.5 bg-green-100 rounded-lg">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
@@ -407,7 +419,7 @@ const App: React.FC = () => {
                 </div>
 
                 {/* Weak Chapters */}
-                <div className="bg-red-50/30 rounded-xl border border-red-100/50 p-5">
+                <div className="bg-red-50/30 rounded-xl border border-red-100/50 p-5 print:bg-red-50">
                   <h4 className="font-bold text-red-800 flex items-center gap-2 mb-4">
                     <div className="p-1.5 bg-red-100 rounded-lg">
                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
@@ -445,7 +457,7 @@ const App: React.FC = () => {
                 />
                 
                 {/* Time Metrics Summary underneath */}
-                <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid">
                    <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                      <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                      Speed Efficiency
