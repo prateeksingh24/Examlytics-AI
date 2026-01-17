@@ -8,10 +8,35 @@ import { BotAnalysis } from './components/BotAnalysis';
 const App: React.FC = () => {
   const [report, setReport] = useState<TestReport | null>(null);
   const [analysis, setAnalysis] = useState<string>("");
-  const [studyPlan, setStudyPlan] = useState<string>(""); // State for Study Plan
+  const [studyPlan, setStudyPlan] = useState<string>(""); 
   const [loading, setLoading] = useState<boolean>(false);
   const [jsonInput, setJsonInput] = useState<string>("");
   const [inputError, setInputError] = useState<string>("");
+
+  // Central function to handle full processing
+  const handleAnalyzeAll = async (data: TestReport) => {
+    setReport(data);
+    setAnalysis(""); 
+    setStudyPlan("");
+    setInputError("");
+    setLoading(true);
+
+    try {
+      // Execute both AI tasks in parallel for speed
+      const [analysisResult, planResult] = await Promise.all([
+        generateAnalysis(data),
+        generateStudyPlan(data)
+      ]);
+      
+      setAnalysis(analysisResult);
+      setStudyPlan(planResult);
+    } catch (error) {
+      console.error("Analysis failed", error);
+      setAnalysis("An error occurred while generating the analysis.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -20,10 +45,7 @@ const App: React.FC = () => {
       reader.onload = (e) => {
         try {
           const json = JSON.parse(e.target?.result as string);
-          setReport(json);
-          setAnalysis(""); 
-          setStudyPlan("");
-          setInputError("");
+          handleAnalyzeAll(json);
         } catch (err) {
           setInputError("Invalid JSON file. Please check the file content.");
         }
@@ -39,17 +61,13 @@ const App: React.FC = () => {
         return;
       }
       const json = JSON.parse(jsonInput);
-      setReport(json);
-      setAnalysis("");
-      setStudyPlan("");
-      setInputError("");
+      handleAnalyzeAll(json);
     } catch (err) {
       setInputError("Invalid JSON text. Please check the format.");
     }
   };
 
   const loadDemoData = () => {
-    // Demo data based on the provided example
     const demo: TestReport = {
       "subjectWiseAnalysis": [
         { "subject": "Physics", "correct": 23, "incorrect": 1, "unattempted": 1 },
@@ -85,23 +103,7 @@ const App: React.FC = () => {
         { "subject": "Overall", "correct": { "easy": 28, "medium": 40, "tough": 1 }, "incorrect": { "easy": 1, "medium": 1, "tough": 0 }, "unattempted": { "easy": 1, "medium": 3, "tough": 0 } }
       ]
     };
-    setReport(demo);
-  };
-
-  const handleGenerateReport = async () => {
-    if (!report) return;
-    setLoading(true);
-    const result = await generateAnalysis(report);
-    setAnalysis(result);
-    setLoading(false);
-  };
-
-  const handleGeneratePlan = async () => {
-    if (!report) return;
-    setLoading(true);
-    const plan = await generateStudyPlan(report);
-    setStudyPlan(plan);
-    setLoading(false);
+    handleAnalyzeAll(demo);
   };
 
   const handleReset = () => {
@@ -439,9 +441,7 @@ const App: React.FC = () => {
                 <BotAnalysis 
                   analysisText={analysis} 
                   planText={studyPlan}
-                  loading={loading} 
-                  onGenerate={handleGenerateReport} 
-                  onGeneratePlan={handleGeneratePlan}
+                  loading={loading}
                 />
                 
                 {/* Time Metrics Summary underneath */}
