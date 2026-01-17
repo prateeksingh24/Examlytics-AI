@@ -189,7 +189,7 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden flex flex-col h-full relative w-full print:h-auto print:border-none print:shadow-none">
+    <div className="bg-white rounded-xl shadow-lg border border-indigo-100 overflow-hidden flex flex-col h-full relative w-full print:h-auto print:border-none print:shadow-none print:overflow-visible print:block">
       
       {/* Header */}
       <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-4 sm:px-6 py-5 flex items-center gap-3 shrink-0 print:bg-none print:text-black">

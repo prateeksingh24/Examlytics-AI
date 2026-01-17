@@ -16,16 +16,27 @@
 
       /* Print Styles */
       @media print {
+        /* Reset height and overflow for pagination */
+        html, body, #root, .min-h-screen {
+          height: auto !important;
+          min-height: 0 !important;
+          overflow: visible !important;
+        }
+
         body {
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
           background-color: white !important;
         }
+        
         /* Hide scrollbars in print */
         ::-webkit-scrollbar { display: none; }
         
         /* Ensure pages break nicely */
         .break-inside-avoid { page-break-inside: avoid; }
+        
+        /* Hide elements specifically marked */
+        .print\:hidden { display: none !important; }
       }
     </style>
   <script type="importmap">

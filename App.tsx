@@ -115,7 +115,14 @@ const App: React.FC = () => {
   };
 
   const handleDownloadReport = () => {
+    const originalTitle = document.title;
+    const dateStr = new Date().toISOString().split('T')[0];
+    document.title = `Examlytics-Report-${dateStr}`;
     window.print();
+    // Restore title after a small delay to ensure print dialog picked it up
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 500);
   };
 
   // ----------------------------------------------------------------------
@@ -261,17 +268,20 @@ const App: React.FC = () => {
                  Examlytics <span className="text-indigo-600">AI</span>
                </span>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button 
                 onClick={handleDownloadReport} 
-                className="text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition px-4 py-2 rounded-lg flex items-center gap-2 print:hidden"
+                title="Save this analysis as a PDF"
+                className="text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 print:hidden"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                Download Report
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <span className="hidden sm:inline">Download Report</span>
+                <span className="inline sm:hidden">Save PDF</span>
               </button>
-              <button onClick={handleReset} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                Upload New
+              <button onClick={handleReset} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                <span className="hidden sm:inline">Upload New</span>
+                <span className="inline sm:hidden">New</span>
               </button>
             </div>
           </div>
@@ -373,12 +383,12 @@ const App: React.FC = () => {
 
                {/* Revised Chart Container for Mobile Responsiveness */}
                <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-center gap-8 h-auto md:h-80">
-                 <div className="w-full md:w-1/2 h-64 md:h-full">
+                 <div className="w-full md:w-1/2 h-80 md:h-full">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Score Contribution</h4>
                     <ScoreDistributionChart data={report} />
                  </div>
                  <div className="w-full h-px md:w-px md:h-full bg-gray-100"></div>
-                 <div className="w-full md:w-1/2 h-64 md:h-full">
+                 <div className="w-full md:w-1/2 h-80 md:h-full">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Difficulty Mastery</h4>
                     <DifficultyAnalysisChart data={report} />
                  </div>
