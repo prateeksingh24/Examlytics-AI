@@ -46,8 +46,8 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
     };
 
     // Regex Definitions
-    const headerRegex = /^(\#{1,6}\s+|(?:\*\*|__)(.*?)(?:\*\*|__)$|^[A-Z][\w\s&]+:$)/; 
-    // Matches: "## Header", "**Header**", "Header:"
+    // Catch: "## Header", "**Header**", "Header:", "### **Header**"
+    const headerRegex = /^(\#{1,6}\s+|(?:\*\*|__)(.*?)(?:\*\*|__)$|^[A-Z][\w\s&]+:$|^\d+\.\s+\*\*.*?\*\*$)/; 
 
     // Section Type Keyword Mapping
     const sectionTypes: Record<string, Section['type']> = {
@@ -64,7 +64,8 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
       "timeline": "info",
       "mentor": "info",
       "category": "info",
-      "summary": "neutral"
+      "summary": "neutral",
+      "steps": "info"
     };
 
     lines.forEach(line => {
@@ -80,8 +81,8 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
           isHeader = false;
         } else {
            isHeader = true;
-           // Cleanup marks
-           cleanLine = line.replace(/^[#*-\s]+|[#*:\s]+$/g, '').trim();
+           // Cleanup marks: remove #, *, - from start and : from end
+           cleanLine = line.replace(/^[#*-\s\d\.]+|[#*:\s]+$/g, '').trim();
         }
       } 
       // Heuristic 2: Short uppercase lines ending in colon
@@ -113,8 +114,19 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
         currentSection = { title: cleanLine, type, content: [] };
       } else {
         // It's Content
-        // Clean list bullets (-, *, •)
-        const contentLine = line.replace(/^[\s•\-\*]+/, '').trim();
+        let contentLine = line.trim();
+
+        // Critical Fix: Only strip bullets if they are NOT part of bold formatting (**Text**)
+        // Remove '• ', '- ', or '* ' (if single star)
+        if (contentLine.startsWith('•')) {
+            contentLine = contentLine.replace(/^•\s*/, '');
+        } else if (contentLine.startsWith('-')) {
+            contentLine = contentLine.replace(/^-\s*/, '');
+        } else if (contentLine.startsWith('*') && !contentLine.startsWith('**')) {
+            // Only remove asterisk if it's a list bullet, not bold start
+            contentLine = contentLine.replace(/^\*\s*/, '');
+        }
+
         if (contentLine) {
           currentSection.content.push(contentLine);
         }
