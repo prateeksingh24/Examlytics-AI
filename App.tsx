@@ -271,11 +271,11 @@ const App: React.FC = () => {
             <div className="flex items-center gap-2">
               <button 
                 onClick={handleDownloadReport} 
-                title="Save this analysis as a PDF"
+                title="Print or Save this analysis as a PDF"
                 className="text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 print:hidden"
               >
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                <span className="hidden sm:inline">Download Report</span>
+                <span className="hidden sm:inline">Save as PDF</span>
                 <span className="inline sm:hidden">Save PDF</span>
               </button>
               <button onClick={handleReset} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
@@ -290,13 +290,13 @@ const App: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 print:mt-4">
         {/* Scoreboard Section */}
-        <section className="mb-8 break-inside-avoid">
+        <section className="mb-8 break-inside-avoid print:break-inside-avoid">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 print:border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2 border-b border-gray-100 pb-4">
               <span className="text-xl">📊</span> Performance Overview
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 print:grid-cols-4">
               {/* Main Score Card */}
               <div className={`rounded-xl p-6 border flex flex-col items-center justify-center text-center relative overflow-hidden ${category.color} print:border-2`}>
                 <div className="absolute top-0 right-0 p-2 opacity-10">
@@ -342,20 +342,20 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Two Column Layout: Charts & Analysis */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        {/* Two Column Layout: Charts & Analysis - REFACTORED FOR PRINT */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 print:block">
           
           {/* Left Column: Visual Data */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-8 print:w-full print:mb-8">
             
             {/* Subject Performance */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200">
                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
                  <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
                  Subject Analysis
                </h3>
                
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 print:grid-cols-3">
                   {report.subjectWiseAnalysis.map((sub, idx) => (
                     <div key={idx} className="border border-gray-100 bg-gray-50/30 rounded-xl p-4 transition-all hover:shadow-md hover:border-indigo-100 group print:bg-gray-50">
                       <div className="flex justify-between items-center mb-3">
@@ -382,27 +382,28 @@ const App: React.FC = () => {
                </div>
 
                {/* Revised Chart Container for Mobile Responsiveness */}
-               <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-center gap-8 h-auto md:h-80">
-                 <div className="w-full md:w-1/2 h-80 md:h-full">
+               <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-center gap-8 h-auto md:h-80 print:h-80 print:block">
+                 <div className="w-full md:w-1/2 h-80 md:h-full print:w-1/2 print:float-left print:h-64">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Score Contribution</h4>
                     <ScoreDistributionChart data={report} />
                  </div>
-                 <div className="w-full h-px md:w-px md:h-full bg-gray-100"></div>
-                 <div className="w-full md:w-1/2 h-80 md:h-full">
+                 <div className="w-full h-px md:w-px md:h-full bg-gray-100 print:hidden"></div>
+                 <div className="w-full md:w-1/2 h-80 md:h-full print:w-1/2 print:float-left print:h-64">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Difficulty Mastery</h4>
                     <DifficultyAnalysisChart data={report} />
                  </div>
                </div>
+               <div className="hidden print:block print:clear-both"></div>
             </div>
 
             {/* Chapter Drill Down */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200 print:mt-8">
               <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
                 <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
                 Deep Dive: Chapter Level
               </h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:grid-cols-2">
                 
                 {/* Strong Chapters */}
                 <div className="bg-green-50/30 rounded-xl border border-green-100/50 p-5 print:bg-green-50">
@@ -458,7 +459,7 @@ const App: React.FC = () => {
           </div>
 
           {/* Right Column: AI Bot */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 print:w-full">
              <div>
                 <BotAnalysis 
                   analysisText={analysis} 
@@ -467,7 +468,7 @@ const App: React.FC = () => {
                 />
                 
                 {/* Time Metrics Summary underneath */}
-                <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid">
+                <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200">
                    <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
                      <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                      Speed Efficiency

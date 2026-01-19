@@ -36,6 +36,7 @@ export const ScoreDistributionChart: React.FC<ChartsProps> = ({ data }) => {
             outerRadius={80}
             paddingAngle={5}
             dataKey="value"
+            isAnimationActive={false}
           >
             {chartData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={index === 0 ? COLORS.physics : index === 1 ? COLORS.chemistry : COLORS.math} />
@@ -81,6 +82,7 @@ export const AttemptDistributionChart: React.FC<ChartsProps> = ({ data }) => {
                         outerRadius={80}
                         paddingAngle={5}
                         dataKey="value"
+                        isAnimationActive={false}
                     >
                          {chartData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
@@ -117,9 +119,9 @@ export const DifficultyAnalysisChart: React.FC<ChartsProps> = ({ data }) => {
                     <YAxis />
                     <RechartsTooltip cursor={{fill: 'transparent'}} />
                     <Legend />
-                    <Bar dataKey="Correct" stackId="a" fill={COLORS.correct} barSize={40} />
-                    <Bar dataKey="Incorrect" stackId="a" fill={COLORS.incorrect} barSize={40} />
-                    <Bar dataKey="Skipped" stackId="a" fill={COLORS.unattempted} barSize={40} />
+                    <Bar dataKey="Correct" stackId="a" fill={COLORS.correct} barSize={40} isAnimationActive={false} />
+                    <Bar dataKey="Incorrect" stackId="a" fill={COLORS.incorrect} barSize={40} isAnimationActive={false} />
+                    <Bar dataKey="Skipped" stackId="a" fill={COLORS.unattempted} barSize={40} isAnimationActive={false} />
                 </BarChart>
             </ResponsiveContainer>
         </div>
