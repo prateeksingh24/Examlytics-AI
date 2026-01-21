@@ -159,33 +159,24 @@ const App: React.FC = () => {
     document.body.removeChild(element);
   };
 
-  // ----------------------------------------------------------------------
-  // RENDER: Landing / Input View
-  // ----------------------------------------------------------------------
   if (!report) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-6 font-inter">
-        
         <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Left Side: Marketing / Hero */}
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-100/80 text-indigo-700 text-xs font-semibold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
               AI-Powered Mentor
             </div>
-            
             <h1 className="text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight">
               Master Your <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">
                 JEE & NEET
               </span> Scores
             </h1>
-            
             <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
               Stop guessing where you lost marks. Upload your test JSON and get a senior mentor-level analysis, personalized strategy, and rank improvement roadmap instantly.
             </p>
-
             <div className="flex gap-6 pt-4">
               <div className="flex flex-col gap-1">
                 <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mb-2">
@@ -210,15 +201,10 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-
-          {/* Right Side: Upload Card */}
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-indigo-100 border border-white p-8 lg:p-10 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
-            
             <h3 className="text-2xl font-bold text-gray-800 mb-6">Analyze Your Performance</h3>
-            
             <div className="space-y-6">
-              {/* File Upload Area */}
               <label className="block group cursor-pointer">
                 <div className="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center bg-gray-50/50 transition-all group-hover:border-indigo-500 group-hover:bg-indigo-50/30">
                   <div className="w-16 h-16 bg-white rounded-full shadow-sm flex items-center justify-center mx-auto mb-4 text-indigo-500 group-hover:scale-110 transition-transform">
@@ -229,14 +215,11 @@ const App: React.FC = () => {
                   <input type="file" className="hidden" accept=".json" onChange={handleFileUpload} />
                 </div>
               </label>
-
               <div className="relative flex items-center py-2">
                 <div className="flex-grow border-t border-gray-200"></div>
                 <span className="flex-shrink-0 mx-4 text-gray-400 text-xs font-semibold uppercase tracking-wider">Or paste JSON</span>
                 <div className="flex-grow border-t border-gray-200"></div>
               </div>
-
-              {/* Text Area Input */}
               <div className="relative">
                 <textarea
                   value={jsonInput}
@@ -245,14 +228,12 @@ const App: React.FC = () => {
                   className="w-full h-32 p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-xs font-mono text-gray-700 bg-white resize-none"
                 />
               </div>
-
               {inputError && (
                 <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm flex items-center gap-2 animate-pulse">
                   <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   {inputError}
                 </div>
               )}
-
               <div className="flex gap-4 pt-2">
                 <button 
                   onClick={handlePasteSubmit}
@@ -274,23 +255,17 @@ const App: React.FC = () => {
     );
   }
 
-  // ----------------------------------------------------------------------
-  // RENDER: Dashboard View
-  // ----------------------------------------------------------------------
-  
   const totalScore = calculateTotalScore(report);
   const category = getCategory(totalScore);
   const strongChapters = identifyStrongChapters(report);
   const weakChapters = identifyWeakChapters(report);
 
-  // Calculate Overall Accuracy
   const totalQuestions = report.subjectWiseAnalysis.reduce((acc, curr) => acc + curr.correct + curr.incorrect + curr.unattempted, 0);
   const totalCorrect = report.subjectWiseAnalysis.reduce((acc, curr) => acc + curr.correct, 0);
   const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / (totalQuestions - report.subjectWiseAnalysis.reduce((a,c) => a + c.unattempted, 0))) * 100) : 0;
 
   return (
     <div className="min-h-screen pb-12 bg-gray-50 font-inter print:bg-white print:pb-0">
-      {/* Header */}
       <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm print:static print:shadow-none print:border-b-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
@@ -312,7 +287,6 @@ const App: React.FC = () => {
                 <span className="hidden sm:inline">Save as PDF</span>
                 <span className="inline sm:hidden">PDF</span>
               </button>
-              
               <button 
                 onClick={handleDownloadText} 
                 title="Download simple text file"
@@ -322,7 +296,6 @@ const App: React.FC = () => {
                 <span className="hidden sm:inline">Download Text</span>
                 <span className="inline sm:hidden">Txt</span>
               </button>
-
               <button onClick={handleReset} className="text-sm font-medium text-gray-500 hover:text-indigo-600 transition px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                 <span className="hidden sm:inline">Upload New</span>
@@ -334,15 +307,12 @@ const App: React.FC = () => {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 print:mt-4">
-        {/* Scoreboard Section */}
         <section className="mb-8 break-inside-avoid print:break-inside-avoid">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 print:border-gray-200">
             <h2 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2 border-b border-gray-100 pb-4">
               <span className="text-xl">📊</span> Performance Overview
             </h2>
-            
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 print:grid-cols-4">
-              {/* Main Score Card */}
               <div className={`rounded-xl p-6 border flex flex-col items-center justify-center text-center relative overflow-hidden ${category.color} print:border-2`}>
                 <div className="absolute top-0 right-0 p-2 opacity-10">
                    <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -353,8 +323,6 @@ const App: React.FC = () => {
                   {category.label}
                 </span>
               </div>
-
-              {/* Accuracy Card */}
               <div className="bg-blue-50/50 rounded-xl p-6 border border-blue-100 flex flex-col items-center justify-center text-center relative group hover:border-blue-200 transition-colors print:bg-blue-50">
                 <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -363,8 +331,6 @@ const App: React.FC = () => {
                 <span className="text-3xl font-bold text-gray-900 mb-1">{accuracy}%</span>
                 <span className="text-xs text-blue-500 font-medium bg-blue-100/50 px-2 py-0.5 rounded">Target: >85%</span>
               </div>
-
-               {/* Attempt Card */}
                <div className="bg-purple-50/50 rounded-xl p-6 border border-purple-100 flex flex-col items-center justify-center text-center group hover:border-purple-200 transition-colors print:bg-purple-50">
                 <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
@@ -375,8 +341,6 @@ const App: React.FC = () => {
                 </span>
                 <span className="text-xs text-purple-500 font-medium bg-purple-100/50 px-2 py-0.5 rounded">Questions</span>
               </div>
-
-              {/* Breakdown Mini Chart */}
               <div className="bg-gray-50 rounded-xl p-3 border border-gray-100 flex flex-col items-center justify-center relative print:bg-gray-50">
                  <div className="absolute top-3 left-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Attempt Distribution</div>
                  <div className="h-28 w-full mt-2">
@@ -387,19 +351,16 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Two Column Layout: Charts & Analysis - REFACTORED FOR PRINT */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 print:block">
+        {/* Stacked Layout for Performance Insights and AI Analysis */}
+        <div className="flex flex-col gap-8 mb-8 print:block">
           
-          {/* Left Column: Visual Data */}
-          <div className="lg:col-span-2 space-y-8 print:w-full print:mb-8">
-            
-            {/* Subject Performance */}
+          {/* Top Section: Visual Data (Full Width) */}
+          <div className="w-full space-y-8">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200">
                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
                  <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
                  Subject Analysis
                </h3>
-               
                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 print:grid-cols-3">
                   {report.subjectWiseAnalysis.map((sub, idx) => (
                     <div key={idx} className="border border-gray-100 bg-gray-50/30 rounded-xl p-4 transition-all hover:shadow-md hover:border-indigo-100 group print:bg-gray-50">
@@ -425,8 +386,6 @@ const App: React.FC = () => {
                     </div>
                   ))}
                </div>
-
-               {/* Revised Chart Container for Mobile Responsiveness */}
                <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-center gap-8 h-auto md:h-80 print:h-80 print:block">
                  <div className="w-full md:w-1/2 h-80 md:h-full print:w-1/2 print:float-left print:h-64">
                     <h4 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Score Contribution</h4>
@@ -441,16 +400,12 @@ const App: React.FC = () => {
                <div className="hidden print:block print:clear-both"></div>
             </div>
 
-            {/* Chapter Drill Down */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200 print:mt-8">
               <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
                 <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
                 Deep Dive: Chapter Level
               </h3>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 print:grid-cols-2">
-                
-                {/* Strong Chapters */}
                 <div className="bg-green-50/30 rounded-xl border border-green-100/50 p-5 print:bg-green-50">
                   <h4 className="font-bold text-green-800 flex items-center gap-2 mb-4">
                     <div className="p-1.5 bg-green-100 rounded-lg">
@@ -473,8 +428,6 @@ const App: React.FC = () => {
                     <p className="text-sm text-gray-500 italic text-center py-4">No clear strong chapters identified yet.</p>
                   )}
                 </div>
-
-                {/* Weak Chapters */}
                 <div className="bg-red-50/30 rounded-xl border border-red-100/50 p-5 print:bg-red-50">
                   <h4 className="font-bold text-red-800 flex items-center gap-2 mb-4">
                     <div className="p-1.5 bg-red-100 rounded-lg">
@@ -498,44 +451,45 @@ const App: React.FC = () => {
                     <p className="text-sm text-gray-500 italic text-center py-4">No critical weak chapters found.</p>
                   )}
                 </div>
-
               </div>
             </div>
           </div>
 
-          {/* Right Column: AI Bot */}
-          <div className="lg:col-span-1 print:w-full">
-             <div>
-                <BotAnalysis 
-                  analysisText={analysis} 
-                  planText={studyPlan}
-                  loading={loading}
-                />
-                
-                {/* Time Metrics Summary underneath */}
-                <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200">
-                   <h3 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                     <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                     Speed Efficiency
-                   </h3>
-                   <div className="space-y-5">
-                      {report.speedAndTimeAnalysis.map((s, i) => (
-                        <div key={i} className="text-sm group">
-                           <div className="flex justify-between mb-2">
-                              <span className="text-gray-600 font-medium">{s.subject}</span>
-                              <span className="font-mono font-bold text-gray-900 bg-gray-50 px-2 py-0.5 rounded border border-gray-200">{s.marksEarnedPerMin} pts/min</span>
-                           </div>
-                           <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                              <div 
-                                className={`h-full rounded-full transition-all duration-1000 ${parseFloat(s.marksEarnedPerMin) > 1.0 ? 'bg-indigo-500' : 'bg-orange-400'}`}
-                                style={{ width: `${Math.min(parseFloat(s.marksEarnedPerMin) * 25, 100)}%` }}
-                              ></div>
-                           </div>
-                        </div>
-                      ))}
-                   </div>
-                </div>
-             </div>
+          {/* Bottom Section: AI Mentor Intelligence (Full Width) */}
+          <div className="w-full flex flex-col gap-8">
+            <BotAnalysis 
+              analysisText={analysis} 
+              planText={studyPlan}
+              loading={loading}
+            />
+            
+            {/* Time Metrics Summary (Full Width) */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 break-inside-avoid print:break-inside-avoid print:border-gray-200">
+               <h3 className="font-bold text-gray-800 mb-6 flex items-center gap-2">
+                 <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                 Speed Efficiency Metrics
+               </h3>
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {report.speedAndTimeAnalysis.map((s, i) => (
+                    <div key={i} className="text-sm group p-4 border border-gray-50 bg-gray-50/30 rounded-xl hover:border-indigo-100 transition-colors">
+                       <div className="flex justify-between mb-3 items-center">
+                          <span className="text-gray-900 font-bold text-lg">{s.subject}</span>
+                          <span className="font-mono font-bold text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">{s.marksEarnedPerMin} pts/min</span>
+                       </div>
+                       <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden shadow-inner">
+                          <div 
+                            className={`h-full rounded-full transition-all duration-1000 ${parseFloat(s.marksEarnedPerMin) > 1.0 ? 'bg-indigo-500' : 'bg-orange-400'}`}
+                            style={{ width: `${Math.min(parseFloat(s.marksEarnedPerMin) * 25, 100)}%` }}
+                          ></div>
+                       </div>
+                       <div className="flex justify-between mt-3 text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                          <span>Slow</span>
+                          <span>Elite Speed</span>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+            </div>
           </div>
 
         </div>
