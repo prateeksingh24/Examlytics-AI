@@ -119,10 +119,44 @@ const App: React.FC = () => {
     const dateStr = new Date().toISOString().split('T')[0];
     document.title = `Examlytics-Report-${dateStr}`;
     window.print();
-    // Restore title after a small delay to ensure print dialog picked it up
     setTimeout(() => {
       document.title = originalTitle;
     }, 500);
+  };
+
+  const handleDownloadText = () => {
+    if (!report) return;
+    
+    const totalScore = calculateTotalScore(report);
+    const category = getCategory(totalScore);
+    const totalQuestions = report.subjectWiseAnalysis.reduce((acc, curr) => acc + curr.correct + curr.incorrect + curr.unattempted, 0);
+    const totalCorrect = report.subjectWiseAnalysis.reduce((acc, curr) => acc + curr.correct, 0);
+    const accuracy = totalQuestions > 0 ? Math.round((totalCorrect / (totalQuestions - report.subjectWiseAnalysis.reduce((a,c) => a + c.unattempted, 0))) * 100) : 0;
+
+    let content = `EXAMLYTICS AI REPORT\nDate: ${new Date().toLocaleDateString()}\n`;
+    content += `====================================\n\n`;
+    content += `OVERVIEW\n`;
+    content += `Total Score: ${totalScore}/300 (${category.label})\n`;
+    content += `Accuracy: ${accuracy}%\n\n`;
+    
+    content += `AI MENTOR ANALYSIS\n`;
+    content += `====================================\n\n`;
+    content += analysis ? analysis.replace(/\*\*/g, '') : "Analysis pending...\n";
+    content += `\n\n`;
+    
+    if (studyPlan) {
+        content += `PERSONALIZED STUDY PLAN\n`;
+        content += `====================================\n\n`;
+        content += studyPlan.replace(/\*\*/g, '');
+    }
+
+    const element = document.createElement("a");
+    const file = new Blob([content], {type: 'text/plain'});
+    element.href = URL.createObjectURL(file);
+    element.download = `Examlytics-Analysis-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(element); // Required for Firefox
+    element.click();
+    document.body.removeChild(element);
   };
 
   // ----------------------------------------------------------------------
@@ -274,11 +308,22 @@ const App: React.FC = () => {
                 title="Print or Save this analysis as a PDF"
                 className="text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 transition px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 print:hidden"
               >
-                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
                 <span className="hidden sm:inline">Save as PDF</span>
-                <span className="inline sm:hidden">Save PDF</span>
+                <span className="inline sm:hidden">PDF</span>
               </button>
-              <button onClick={handleReset} className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
+              
+              <button 
+                onClick={handleDownloadText} 
+                title="Download simple text file"
+                className="text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition px-3 sm:px-4 py-2 rounded-lg flex items-center gap-2 print:hidden"
+              >
+                <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                <span className="hidden sm:inline">Download Text</span>
+                <span className="inline sm:hidden">Txt</span>
+              </button>
+
+              <button onClick={handleReset} className="text-sm font-medium text-gray-500 hover:text-indigo-600 transition px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2 print:hidden">
                 <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                 <span className="hidden sm:inline">Upload New</span>
                 <span className="inline sm:hidden">New</span>

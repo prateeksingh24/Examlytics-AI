@@ -65,7 +65,8 @@ export const BotAnalysis: React.FC<BotAnalysisProps> = ({
       "mentor": "info",
       "category": "info",
       "summary": "neutral",
-      "steps": "info"
+      "steps": "info",
+      "focus": "strategy"
     };
 
     lines.forEach(line => {

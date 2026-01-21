@@ -83,6 +83,7 @@ export const generateAnalysis = async (data: TestReport): Promise<string> => {
   Areas to Improve
   Strong Chapters
   Weak Chapters
+  Your Focus Areas (NEW - CRITICAL SECTION)
   Recommendation (Category-Specific Strategy)
   Subject-Wise Action Plan (only for weak/inconsistent subjects)
   Physics (if applicable)
@@ -108,19 +109,24 @@ export const generateAnalysis = async (data: TestReport): Promise<string> => {
   Count errors by incorrectReason when available.
   Convert to taxonomy: conceptual/formula/calculation/careless/time-selection.
   Split into forced vs unforced.
-  STEP 4: RECOMMENDATION RULES (MUST INCLUDE)
+  STEP 4: LOGIC FOR "Your Focus Areas" (MANDATORY)
+  Synthesize the Weak Chapters list and top Error Reasons (e.g., Calculation mistakes, Conceptual gaps).
+  Identify exactly 3-5 highest priority areas.
+  Format each bullet as: "**[Topic/Skill]**: [Specific Actionable Advice]".
+  Example: "**Thermodynamics**: Revise cyclic process formulas; solve 15 PYQs to fix conceptual errors."
+  STEP 5: RECOMMENDATION RULES (MUST INCLUDE)
   Daily structure (time blocks + objective)
   Weekly test strategy (sectional + full mock cadence)
   Revision method (short notes / formula sheets / spaced review)
   Error-log system (format + daily use)
   Subject time split (based on where marks/min & accuracy are worst)
-  STEP 5: TIMELINE (MANDATORY OUTPUT)
+  STEP 6: TIMELINE (MANDATORY OUTPUT)
   Provide:
   6-week goal (score + accuracy/attempt targets)
   3-month target
   6-month target
   1-year expected outcome (marks/rank oriented; if rank cannot be inferred, say so and give marks band only)
-  STEP 6: MENTOR VIEW (END INSIDE “Mentor Action Items”)
+  STEP 7: MENTOR VIEW (END INSIDE “Mentor Action Items”)
   Must contain:
   Current category
   Target next category

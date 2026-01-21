@@ -17,10 +17,11 @@
       /* Print Styles */
       @media print {
         /* Reset height and overflow for pagination */
-        html, body, #root, .min-h-screen {
+        html, body, #root, main, section, .min-h-screen {
           height: auto !important;
           min-height: 0 !important;
           overflow: visible !important;
+          display: block !important;
         }
 
         body {
@@ -37,6 +38,10 @@
         
         /* Hide elements specifically marked */
         .print\:hidden { display: none !important; }
+
+        /* Fix grid/flex issues in print */
+        .print\:block { display: block !important; }
+        .print\:w-full { width: 100% !important; }
       }
     </style>
   <script type="importmap">
